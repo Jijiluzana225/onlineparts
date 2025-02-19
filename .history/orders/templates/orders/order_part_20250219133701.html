@@ -1,0 +1,64 @@
+{% extends 'orders/landing.html' %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="text-center">Order a Part</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Part Name</label>
+                            {{ form.part_name }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            {{ form.description }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Brand</label>
+                            {{ form.brand }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Car Model</label>
+                            {{ form.car_model }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Year</label>
+                            {{ form.year }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Upload Image 1</label>
+                            {{ form.image1 }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Upload Image 2 (Optional)</label>
+                            {{ form.image2 }}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Submit Request</button>
+                        
+                        <button type="button" class="btn btn-secondary w-100 mt-3" onclick="location.href='{% url 'home' %}'">
+                            Close
+                        </button>
+                        
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

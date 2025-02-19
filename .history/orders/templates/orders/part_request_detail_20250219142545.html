@@ -1,0 +1,39 @@
+{% extends 'orders/landing.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white text-center">
+            <h4>Part Request Details</h4>
+        </div>
+        <div class="card-body">
+            <h5>{{ part_request.part_name }} ({{ part_request.brand }})</h5>
+            <p><strong>Car Model:</strong> {{ part_request.car_model }} ({{ part_request.year }})</p>
+            <p><strong>Description:</strong> {{ part_request.description }}</p>
+            <p><strong>Status:</strong>
+                {% if part_request.status == "Open" %}
+                    <span class="badge bg-success">Open</span>
+                {% else %}
+                    <span class="badge bg-danger">Closed</span>
+                {% endif %}
+            </p>
+            <p><strong>Condition:</strong> 
+                {% if part_request.brand_new %} Brand New {% endif %}
+                {% if part_request.used %} Used {% endif %}
+            </p>
+            <div>
+                <strong>Images:</strong><br>
+                <img src="{{ part_request.image1.url }}" class="img-fluid rounded" style="max-width: 300px;">
+                <img src="{{ part_request.image2.url }}" class="img-fluid rounded mt-2" style="max-width: 300px;">
+            </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between">
+            <a href="{% url 'part_request_list' %}" class="btn btn-secondary">Back to List</a>
+
+            {% if user.is_authenticated and user.is_store %}
+                <a href="{% url 'place_bid' part_request.id %}" class="btn btn-success">Place a Bid</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

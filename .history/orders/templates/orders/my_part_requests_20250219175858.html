@@ -1,0 +1,84 @@
+{% extends 'orders/landing.html' %}
+{% load humanize %}
+{% block content %} 
+<div class="container mt-5">
+    <h2 class="text-center text-uppercase fw-bold">My Part Requests</h2>
+
+    {% for request in part_requests %}
+    <div class="card mt-4 shadow-lg border-0">
+       
+        <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #007bff, #6610f2);">
+            <h5 class="mb-0 fw-bold">{{ request.part_name }} ({{ request.brand }})</h5>
+            <span class="badge {% if request.status == 'Open' %}bg-success{% else %}bg-danger{% endif %} px-3 py-2 fs-6">
+                {{ request.status }}
+            </span>
+            <p><h4 class="text-primary fw-bold">{{ request.part_name }} </h4></p>
+        </div>
+
+        <div class="card-body p-4">
+            <p class="mb-2"><strong>Car Model:</strong> {{ request.car_model }} ({{ request.year }})</p>
+            <p class="mb-2"><strong>Condition:</strong> 
+                {% if request.brand_new %} <span class="badge bg-info text-dark px-2 py-1">Brand New</span> {% endif %}
+                {% if request.used %} <span class="badge bg-warning text-dark px-2 py-1">Used</span> {% endif %}
+            </p>
+            <p class="mb-2"><strong>Description:</strong> {{ request.description }}</p>
+            <p class="mb-2"><strong>Requested On:</strong> {{ request.created_at|date:"F d, Y H:i" }}</p>
+            
+            <!-- Display Bids for this Request -->
+            <h5 class="mt-4">Bids Received:</h5>
+            {% if request.bids.all %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mt-3">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Store</th>
+                            <th>Condition</th>
+                            <th>Price</th>
+                            <th>Notes</th>
+                            {% comment %} <th>Images</th> {% endcomment %}
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bid in request.bids.all %}
+                        <tr class="table-light">
+                            <td class="fw-bold text-primary">{{ bid.store.username }}</td>
+                            <td class="fw-bold text-primary">{{ bid.condition }}</td>
+                            <td class="fw-bold text-success">{{ bid.price|floatformat:2|intcomma }}</td>
+                            
+                            <td class="text-muted">{{ bid.notes }}</td>
+                            {% comment %} <td>
+                                {% if bid.image1 %}
+                                    <a href="{{ bid.image1.url }}" target="_blank">
+                                        <img src="{{ bid.image1.url }}" class="img-thumbnail rounded shadow-sm" style="width: 80px;">
+                                    </a>
+                                {% endif %}
+                                {% if bid.image2 %}
+                                    <a href="{{ bid.image2.url }}" target="_blank">
+                                        <img src="{{ bid.image2.url }}" class="img-thumbnail rounded shadow-sm" style="width: 80px;">
+                                    </a>
+                                {% endif %}
+                            </td> {% endcomment %}
+                            <td>
+                                <a href="{% url 'bid_detail' bid.id %}" class="btn btn-info btn-sm text-white fw-bold">
+                                    View Details
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted text-center">No bids received yet.</p>
+            {% endif %}
+        </div>
+    </div>
+{% empty %}
+    <div class="alert alert-warning text-center mt-5 fw-bold">
+        🚗 You have not requested any parts yet.
+    </div>
+{% endfor %}
+
+</div>
+{% endblock %}

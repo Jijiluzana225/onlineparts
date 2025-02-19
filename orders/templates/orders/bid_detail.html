@@ -1,0 +1,69 @@
+
+
+{% extends 'orders/landing.html' %}
+{% load humanize %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded">
+        <div class="card-header bg-gradient text-white text-center py-3" style="background: linear-gradient(45deg, #28a745, #218838);">
+            <h3 class="mb-0 fw-bold">Bid Details</h3>
+        </div>
+        <div class="card-body p-4">
+            <h4 class="text-primary fw-bold">{{ bid.part_request.part_name }} ({{ bid.part_request.brand }})</h4>
+            <p class="mb-2"><strong>Car Model:</strong> {{ bid.part_request.car_model }} ({{ bid.part_request.year }})</p>
+            <p class="mb-2"><strong>Condition:</strong> 
+                {% if bid.part_request.brand_new %} <span class="badge bg-info text-dark px-2 py-1">Brand New</span> {% endif %}
+                {% if bid.part_request.used %} <span class="badge bg-warning text-dark px-2 py-1">Used</span> {% endif %}
+            </p>
+            <hr class="my-4">
+
+            <h4 class="text-success fw-bold">Bid Information</h4>
+            <p class="mb-2"><strong>Store:</strong> <span class="text-primary fw-bold">{{ bid.store.completename }}</span></p>
+            <p class="mb-3"><strong>Condition:</strong> {{ bid.condition }}</p>
+
+            <p class="mb-2"><strong>Bid Price:</strong> 
+                <span class="text-danger fw-bold fs-4">
+                    {{ bid.price|floatformat:2|intcomma }}
+                </span>
+            </p>
+            <p class="mb-3"><strong>Notes:</strong> {{ bid.notes }}</p>
+
+            <h5 class="mt-4 text-dark fw-bold">Bid Images:</h5>
+            <div class="d-flex flex-wrap gap-3">
+                {% if bid.image1 %}
+                    <a href="{{ bid.image1.url }}" target="_blank">
+                        <img src="{{ bid.image1.url }}" class="img-thumbnail rounded shadow-sm hover-zoom" style="max-width: 300px;">
+                    </a>
+                {% endif %}
+                {% if bid.image2 %}
+                    <a href="{{ bid.image2.url }}" target="_blank">
+                        <img src="{{ bid.image2.url }}" class="img-thumbnail rounded shadow-sm hover-zoom" style="max-width: 300px;">
+                    </a>
+                {% endif %}
+            </div>
+
+            <p class="mt-4"><strong>Bid Submitted On:</strong> <span class="text-muted">{{ bid.created_at|date:"F d, Y H:i" }}</span></p>
+        </div>
+
+        <div class="card-footer d-flex justify-content-between align-items-center p-3">
+            <a href="{% url 'my_part_requests' %}" class="btn btn-outline-secondary px-4 py-2 fw-bold">⬅ Back to My Requests</a>
+            {% if bid.part_request.status == "Open" %}
+                <form method="post" action="{% url 'accept_bid' bid.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success px-4 py-2 fw-bold">✔ Accept Bid</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .hover-zoom {
+        transition: transform 0.3s ease-in-out;
+    }
+    .hover-zoom:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+{% endblock %}

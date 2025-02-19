@@ -1,0 +1,74 @@
+{% extends 'orders/landing.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4>Place a Bid</h4>
+                </div>
+                <div class="card-body">
+                    <h5 class="mb-3">{{ part_request.part_name }} ({{ part_request.brand }})</h5>
+                    <p><strong>Car Model:</strong> {{ part_request.car_model }} ({{ part_request.year }})</p>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label" style="font-size: largest">Price (Php)</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notes</label>
+                            {{ form.notes }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Upload Image 1</label>
+                            {{ form.image1 }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Upload Image 2 (Optional)</label>
+                            {{ form.image2 }}
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Submit Bid</button>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a href="{% url 'part_request_detail' part_request.id %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let priceInput = document.querySelector("#id_price");
+
+        if (priceInput) {
+            priceInput.addEventListener("input", function () {
+                let value = priceInput.value.replace(/,/g, ""); // Remove commas
+                
+                // Allow only numbers and one decimal point
+                if (!/^\d*\.?\d*$/.test(value)) {
+                    priceInput.value = priceInput.value.slice(0, -1);
+                    return;
+                }
+
+                // Format as currency with commas
+                let parts = value.split(".");
+                let integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); // Add commas
+                let decimalPart = parts[1] ? "." + parts[1].slice(0, 2) : ""; // Limit to 2 decimals
+                priceInput.value = integerPart + decimalPart;
+            });
+
+            // Ensure proper number format on form submission
+            priceInput.closest("form").addEventListener("submit", function () {
+                priceInput.value = priceInput.value.replace(/,/g, ""); // Remove commas before sending
+            });
+        }
+    });
+</script>
+
+
+{% endblock %}

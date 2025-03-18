@@ -6,14 +6,15 @@ from django.contrib.auth.forms import UserCreationForm
 
 
 def register_view(request):
-    if request.method == 'POST':
-        form = CustomerRegistrationForm(request.POST)
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            user = form.save()
+            login(request, user)  # Auto-login after registration
+            return redirect('home')
     else:
-        form = CustomerRegistrationForm()
-    return render(request, 'orders/register.html', {'form': form})
+        form = UserCreationForm()
+    return render(request, 'stores/register.html', {'form': form})
 
 
 

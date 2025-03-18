@@ -4,17 +4,21 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
-
 def register_view(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CustomerRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('login')
+            user = form.save()  # Create the user
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password1")
+            user = authenticate(username=username, password=password)  # Authenticate
+            if user is not None:
+                login(request, user)  # Auto-login user
+                return redirect("landing")  # Redirect to landing page
     else:
-        form = CustomerRegistrationForm()
-    return render(request, 'orders/register.html', {'form': form})
-
+        form = UserCreationForm()
+    
+    return render(request, "orders/register.html", {"form": form})
 
 
 def landing_page(request):

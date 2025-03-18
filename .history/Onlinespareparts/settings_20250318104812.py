@@ -145,8 +145,6 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Manila'
 
 LOGIN_URL = '/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/login/'  # Redirect to login after logout
 
 USE_I18N = True
 
@@ -161,6 +159,11 @@ STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/login/'  # Redirect to login after logout
+
+
 
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

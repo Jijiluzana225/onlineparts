@@ -98,12 +98,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',  # Use PostgreSQL
         'NAME': 'railway',  # Replace with your database name
         'USER': 'postgres',  # Replace with your PostgreSQL user
-        'PASSWORD': 'YyDMaLFFtRzOeqxStuTsPkUWdvnKbaSA',  # Replace with your PostgreSQL password               
-        'HOST': 'shortline.proxy.rlwy.net',  # For local development, use 'localhost'
-        'PORT': '24060',  # Default PostgreSQL port
+        'PASSWORD': 'PburmlTOmJFklcGFmEhFtzzJHBchQHAL',  # Replace with your PostgreSQL password               
+        'HOST': 'autorack.proxy.rlwy.net',  # For local development, use 'localhost'
+        'PORT': '25019',  # Default PostgreSQL port
     }
 }
-
 
 
 AUTH_USER_MODEL = 'orders.Customer'

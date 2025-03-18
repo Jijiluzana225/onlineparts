@@ -112,8 +112,8 @@ class Bid(models.Model):
     condition = models.CharField(max_length=10, choices=CONDITION_CHOICES, default="Brand New")  
     price = models.DecimalField(max_digits=10, decimal_places=2)
     notes = models.TextField(blank=True, null=True)
-    image1 = models.ImageField(storage=MediaCloudinaryStorage(), upload_to="bid_images/", blank=True, null=True)
-    image2 = models.ImageField(storage=MediaCloudinaryStorage(), upload_to="bid_images/", blank=True, null=True)
+    image1 = models.ImageField(upload_to="bid_images/", blank=True, null=True)
+    image2 = models.ImageField(upload_to="bid_images/", blank=True, null=True)
     status = models.CharField(max_length=10, choices=BID_STATUS_CHOICES, default="")    
     created_at = models.DateTimeField(auto_now_add=True)
 

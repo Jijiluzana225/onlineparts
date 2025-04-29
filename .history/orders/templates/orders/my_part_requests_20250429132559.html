@@ -2,18 +2,17 @@
 {% load humanize %}
 {% block content %} 
 <div class="container mt-5">
-    <h2 class="text-center text-uppercase fw-bold">My Requested Parts</h2>
+    <h2 class="text-center text-uppercase fw-bold">My Part Requests</h2>
 
     {% for request in part_requests %}
     <div class="card mt-4 shadow-lg border-0">
      
        
         <div class="card-header bg-gradient text-white" style="background: linear-gradient(45deg, #007bff, #6610f2);">
-            <div class="d-flex justify-content-end mt-4">
-                <a href="{% url 'home' %}" class="btn btn-danger btn-lg">
-                    x
-                </a>
-            </div>
+            <a href="{% url 'home' %}" class="btn btn-danger btn-lg rounded-circle"
+            style="align:right; z-index: 1050;">
+             &times;
+         </a>
             <h5 class="mb-0 fw-bold">{{ request.part_name }} ({{ request.brand }})</h5>
             <span class="badge {% if request.status == 'Open' %}bg-success{% else %}bg-danger{% endif %} px-3 py-2 fs-6">
                 {{ request.status }}

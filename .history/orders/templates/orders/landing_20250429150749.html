@@ -9,26 +9,21 @@
   
     <style>
     body {
-        margin: 0;
-        padding:0;
-        height: 100vh;
-        background-image: url("{% static 'images/autoparts.png' %}");
-        background-size:50%;          /* Cover the whole screen */
-        background-position: center center; /* Center the image horizontally and vertically */
-        background-repeat: no-repeat;
-        background-attachment: fixed;    /* So it stays fixed when scrolling */
-    }
-
-    main.container {
-        min-height: 100vh;
-        padding-top: 100px;
-        background-image: url("{% static 'images/autoparts.png' %}");
-        background-size: 50%;
-        background-position: center 50px; /* horizontally center, vertically offset upward */
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
-
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #000; /* fallback in case image doesn't load */
+        }
+        
+        main.container {
+            min-height: 100vh;
+            padding-top: 100px; /* space to clear the fixed navbar */
+            background-image: url("{% static 'images/autoparts.png' %}");
+            background-size: 50%;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
     .btn-custom {
         background-color: #ff6f00;
         color: white;

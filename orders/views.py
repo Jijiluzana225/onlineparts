@@ -199,3 +199,19 @@ class BidDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(request, "Bid deleted successfully!")
         return super().delete(request, *args, **kwargs)
+
+
+from django.shortcuts import redirect, get_object_or_404
+from django.contrib import messages
+from .models import PartRequest
+
+def delete_part_request(request, pk):
+    part_request = get_object_or_404(PartRequest, pk=pk, user=request.user)
+
+    if request.method == "POST":
+        part_request.delete()
+        messages.success(request, "Part request deleted successfully.")
+        return redirect('my_part_requests')  # Adjust this to your page name
+    else:
+        messages.error(request, "Invalid request method.")
+        return redirect('my_part_requests')

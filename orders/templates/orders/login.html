@@ -1,41 +1,98 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login</title>
+    <title>Login - cdoshops.shop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
         }
+
+        .site-caption {
+            font-size: 32px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+        }
+
         .login-container {
+            width: 100%;
             max-width: 400px;
-            margin: 80px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
         }
+
+        .login-container h2 {
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 25px;
+        }
+
+        label {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
         .btn-custom {
-            background-color: #ff6f00;
+            background-color: #00b4d8;
             color: white;
             border-radius: 30px;
             width: 100%;
             padding: 10px;
             font-size: 16px;
+            border: none;
         }
+
         .btn-custom:hover {
-            background-color: #e65c00;
+            background-color: #0096c7;
+        }
+
+        .btn-outline-secondary {
+            color: #fff;
+            border-color: #fff;
+            border-radius: 30px;
+        }
+
+        .btn-outline-secondary:hover {
+            background-color: #fff;
+            color: #1e3c72;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
+    <div class="site-caption text-center">cdoshops.shop</div>
+
     <div class="login-container">
-        <h2 class="text-center mb-4">Login</h2>
+        <h2 class="text-center">Login</h2>
         <form method="post">
             {% csrf_token %}
             <div class="mb-3">
@@ -52,9 +109,7 @@
             <a href="{% url 'register' %}" class="btn btn-outline-secondary w-100">Register</a>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-

@@ -23,6 +23,7 @@ urlpatterns = [
     path("bidview/<int:pk>/update/", BidUpdateView.as_view(), name="bid_update"),
     path("bidview/<int:pk>/delete/", BidDeleteView.as_view(), name="bid_delete"),
     
-    
+    path('delete-part-request/<int:pk>/', delete_part_request, name='delete_part_request'),
+
 ]
 

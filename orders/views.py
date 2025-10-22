@@ -189,7 +189,7 @@ class BidUpdateView(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy("bid_detail", kwargs={"pk": self.object.pk})
+        return reverse_lazy("store_bids")
 
 class BidDeleteView(DeleteView):
     model = Bid

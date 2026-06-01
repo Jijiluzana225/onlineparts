@@ -692,14 +692,15 @@
             });
 
             // Close navbar on link click (mobile)
-            const navbar = document.querySelector('.navbar-collapse');
-            document.querySelectorAll('.navbar-nav a').forEach(link => {
-                link.addEventListener('click', function() {
-                    if (navbar.classList.contains('show')) {
-                        document.querySelector('.navbar-toggler').click();
-                    }
-                });
-            });
+           const navbar = document.querySelector('.navbar-collapse');
+
+document.querySelectorAll('.navbar-nav a:not(.dropdown-toggle)').forEach(link => {
+    link.addEventListener('click', function () {
+        if (navbar.classList.contains('show')) {
+            document.querySelector('.navbar-toggler').click();
+        }
+    });
+});
 
             // Active link highlighting
             const currentLocation = location.pathname;

@@ -40,8 +40,8 @@ ALLOWED_HOSTS = ["*"]
 CSRF_TRUSTED_ORIGINS = ['https://*.railway.app',
                         'https://www.cdoshops.shop',                      
                         'https://cdoshops.shop',
-                        'www.getautoshops.shop',
-                        'getautoshops.shop']
+                        'https://www.getautoshops.shop',
+                        'https://getautoshops.shop']
 
 # Application definition
 

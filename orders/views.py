@@ -45,6 +45,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import PartRequestForm
 
+
 @login_required
 def order_part_view(request):
     if request.method == "POST":
@@ -59,6 +60,22 @@ def order_part_view(request):
 
     return render(request, "orders/order_part.html", {"form": form})
 
+
+from PIL import Image
+
+def save(self, *args, **kwargs):
+    super().save(*args, **kwargs)
+
+    for field_name in ['image1', 'image2']:
+        image_field = getattr(self, field_name)
+
+        if image_field:
+            img = Image.open(image_field.path)
+
+            img.thumbnail((400, 400), Image.LANCZOS)
+
+            img.save(image_field.path, quality=85, optimize=True)
+            
 
 def order_success(request):
     return render(request, "orders/order_success.html")

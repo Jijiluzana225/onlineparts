@@ -67,6 +67,10 @@ STATUS_CHOICES = [
     ("Closed", "Closed"),
 ]
 
+
+from django.db import models
+from PIL import Image
+
 # Part Request Model
 class PartRequest(models.Model):
     brand_new = models.BooleanField(default=True)
@@ -85,11 +89,28 @@ class PartRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="Open")
     
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        for field_name in ['image1', 'image2']:
+            image_field = getattr(self, field_name)
+
+            if image_field:
+                img = Image.open(image_field.path)
+
+                # Resize to exactly 400x400
+                img = img.resize((400, 400), Image.LANCZOS)
+
+                img.save(image_field.path, quality=85, optimize=True)
+
     def __str__(self):
         return f"{self.part_name} ({self.brand} - {self.car_model})"
     
+
     
-    from django.db import models
+
+    
+from django.db import models
 from django.conf import settings
 
 # Bid Status Choices

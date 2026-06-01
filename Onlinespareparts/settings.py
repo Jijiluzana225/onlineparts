@@ -33,7 +33,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-gi6=1jk+k68f(2@lyj+$yo7w-m3=deljloq_xg!o&%b14t3qu&'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'cloudinary',
     'cloudinary_storage',
+    
     
 ]
 

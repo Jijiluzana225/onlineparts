@@ -120,3 +120,5 @@ class Bid(models.Model):
     def __str__(self):
         return f"Bid by {self.store.username} for {self.part_request.part_name}"
 
+    class Meta:
+        ordering = ["status","-price"]

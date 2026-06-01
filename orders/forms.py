@@ -88,8 +88,8 @@ class PartRequestForm(forms.ModelForm):
             "part_name": forms.TextInput(attrs={"class": "form-control"}),
         }
 
-    image1 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control"}))
-    image2 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control"}))
+    image1 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control","capture":"environment"}))
+    image2 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control","capture":"environment"}))
 
 
 
@@ -106,6 +106,6 @@ class BidForm(forms.ModelForm):
         
         }
 
-    image1 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control"}))
-    image2 = forms.ImageField(required=False, widget=forms.FileInput(attrs={"class": "form-control"}))
+    image1 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control","capture":"environment"}))
+    image2 = forms.ImageField(required=False, widget=forms.FileInput(attrs={"class": "form-control","capture":"environment"}))
 

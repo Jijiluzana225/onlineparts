@@ -604,14 +604,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid px-2 px-md-4">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <i class="fas fa-cogs"></i>www.getautoparts.shop
-            </a>
-        </div>
-    </nav>
+
 
     <!-- Main Content -->
     <main>
@@ -620,9 +613,13 @@
             <div class="auth-card">
                 <!-- Header -->
                 <div class="auth-header">
+                   <h3 style="color: black;">www.getautoparts.shop</h3>
+                </br>
+
                     <i class="fas fa-sign-in-alt"></i>
+                    
                     <h2>{% block auth_title %}Login{% endblock %}</h2>
-                    <p>{% block auth_subtitle %}Welcome back{% endblock %}</p>
+                   
                 </div>
 
                 <!-- Body -->

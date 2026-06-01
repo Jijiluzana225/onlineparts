@@ -67,7 +67,7 @@ from django.shortcuts import render
 from .models import PartRequest
 
 def part_request_list(request):
-    part_requests = PartRequest.objects.all().order_by('-created_at')  # Order by latest date
+    part_requests = PartRequest.objects.all().order_by('-status', '-created_at')  # Order by status and then by latest date
     return render(request, 'orders/part_request_list.html', {'part_requests': part_requests})
 
 from django.shortcuts import render, get_object_or_404
@@ -209,5 +209,5 @@ def delete_part_request(request, pk):
     if request.method == "POST":
         part_request.delete()
         messages.success(request, "Your part request has been deleted successfully.")
-        return redirect('part_request_list')  # change to your correct view name
-    return redirect('part_request_list')
+        return redirect('my_part_requests')  # change to your correct view name
+    return redirect('my_part_requests')

@@ -4,185 +4,679 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}Landing Page{% endblock %}</title>
+    <title>{% block title %}www.getautoparts.shop - Premium Auto Parts Online{% endblock %}</title>
+    
+    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* Smooth animated gradient background with image overlay */
-        body {
+        /* ========== ROOT VARIABLES ========== */
+        :root {
+            --primary: #ff6f00;
+            --primary-dark: #e55100;
+            --secondary: #ffb703;
+            --bg-dark: #0f1419;
+            --bg-light: #f8f9fa;
+            --text-dark: #1a1a1a;
+            --text-light: #ffffff;
+            --border-color: #e9ecef;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* ========== GLOBAL STYLES ========== */
+        * {
             margin: 0;
             padding: 0;
-            height: 100vh;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            color: white;
-            font-family: 'Poppins', Arial, sans-serif;
+            box-sizing: border-box;
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
         }
 
-        {% comment %} /* Subtle overlay of your auto parts image */
-        body::after {
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* ========== ANIMATED BACKGROUND ========== */
+        body::before {
             content: "";
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            background: url("{% static 'images/autoparts.png' %}") center center no-repeat;
-            background-size: 60%;
-            opacity: 0.12;
-            z-index: 0;
-        } {% endcomment %}
+            background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #0f1419 100%);
+            z-index: -2;
+        }
 
-        /* Navbar styling */
+        /* ========== NAVBAR STYLES ========== */
         .navbar {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: all 0.3s ease;
+            background: rgba(15, 20, 25, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 111, 0, 0.1);
+            padding: 0.75rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .navbar-brand {
-            font-weight: bold;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
-            color: #ffb703 !important;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .navbar-brand:hover {
+            transform: scale(1.05);
+        }
+
+        .navbar-brand i {
+            margin-right: 0.5rem;
+            -webkit-text-fill-color: var(--primary);
         }
 
         .navbar-nav .nav-link {
-            color: #fff !important;
+            color: #b0b0b0 !important;
             font-weight: 500;
-            transition: color 0.3s ease;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 0.25rem 0;
+            text-decoration: none;
+        }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
         }
 
         .navbar-nav .nav-link:hover {
-            color: #ffb703 !important;
+            color: var(--text-light) !important;
         }
 
-        .btn-custom {
-            background: linear-gradient(45deg, #ff6f00, #ffb703);
-            color: #fff;
-            border-radius: 30px;
-            padding: 12px 25px;
-            font-size: 1.1rem;
+        .navbar-nav .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .navbar-nav .nav-link.active {
+            color: var(--secondary) !important;
+        }
+
+        /* ========== BUTTON STYLES ========== */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, var(--primary), #ff8c00);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
             font-weight: 600;
-            text-transform: uppercase;
+            font-size: 0.9rem;
             box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
             transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            text-decoration: none;
+            display: inline-block;
         }
 
-        .btn-custom:hover {
-            background: linear-gradient(45deg, #ffb703, #ff6f00);
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255, 111, 0, 0.5);
+        .btn-primary-custom:hover {
+            background: linear-gradient(135deg, var(--primary-dark), #ff6f00);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 111, 0, 0.4);
+            color: var(--text-light);
+            text-decoration: none;
         }
 
-        /* Center content area */
+        .btn-secondary-custom {
+            background: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary-custom:hover {
+            background: var(--secondary);
+            color: var(--text-dark);
+            transform: translateY(-2px);
+            text-decoration: none;
+        }
+
+        /* ========== HERO SECTION ========== */
         main.container {
             position: relative;
             z-index: 1;
-            min-height: 100vh;
+            min-height: calc(100vh - 80px);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding-top: 100px;
+            padding: 2rem 1rem;
+            margin-top: 0;
+            margin-bottom: 0;
         }
 
-        /* Optional glass-like content box */
-        .content-box {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 50px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        .hero-content {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: clamp(2.5rem, 5vw, 4rem);
+            backdrop-filter: blur(20px);
+            box-shadow: var(--shadow-lg);
             text-align: center;
-            color: #fff;
-            max-width: 800px;
-            width: 90%;
+            color: var(--text-light);
+            max-width: 700px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease;
         }
 
-        .center-text {
-            font-size: 3.5rem;
-            font-weight: 700;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
-        }
-
-        @media (max-width: 768px) {
-            .center-text {
-                font-size: 2rem;
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-    </style>
 
-    {% block extra_css %}{% endblock %}
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1rem, vw, 3.5rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 1.25rem;
+            background: linear-gradient(135deg, var(--secondary), #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.25rem);
+            color: #b0b0b0;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* ========== FEATURES SECTION ========== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+            width: 100%;
+        }
+
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 1rem;
+            background: rgba(255, 111, 0, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 111, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 111, 0, 0.08);
+            border-color: rgba(255, 111, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 111, 0, 0.15);
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover .feature-icon {
+            background: rgba(255, 111, 0, 0.25);
+            transform: scale(1.1);
+        }
+
+        .feature-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.35rem;
+            color: var(--text-light);
+        }
+
+        .feature-description {
+            font-size: 0.8rem;
+            color: #8a8a8a;
+            line-height: 1.4;
+        }
+
+        /* ========== BUTTONS SECTION ========== */
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            width: 100%;
+        }
+
+        /* ========== DROPDOWN MENU ========== */
+        .dropdown-menu {
+            background: rgba(15, 20, 25, 0.98);
+            border: 1px solid rgba(255, 111, 0, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-lg);
+            padding: 0.5rem 0;
+            animation: slideDown 0.3s ease;
+            min-width: 200px;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .dropdown-menu .dropdown-item {
+            color: #b0b0b0;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.7rem 1.5rem;
+        }
+
+        .dropdown-menu .dropdown-item:hover {
+            background: rgba(255, 111, 0, 0.1);
+            color: var(--secondary);
+            padding-left: 2rem;
+        }
+
+        .dropdown-menu .dropdown-item form {
+            margin: 0;
+        }
+
+        .dropdown-menu .dropdown-item form button {
+            background: none;
+            border: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+            color: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+            padding: 0;
+        }
+
+        .dropdown-divider {
+            border-color: rgba(255, 111, 0, 0.1);
+            margin: 0.5rem 0;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 992px) {
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+
+            .navbar-collapse {
+                margin-top: 1rem;
+                border-top: 1px solid rgba(255, 111, 0, 0.1);
+                padding-top: 1rem;
+            }
+
+            .navbar-nav .nav-link {
+                padding: 0.5rem 0;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .btn-primary-custom,
+            .btn-secondary-custom {
+                width: 100%;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .navbar {
+                padding: 0.5rem 0;
+            }
+
+            .navbar-brand {
+                font-size: 1rem;
+            }
+
+            .hero-content {
+                padding: 1.75rem 1rem;
+                border-radius: 15px;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 1.5rem;
+            }
+
+            main.container {
+                min-height: calc(100vh - 60px);
+                padding: 1rem 0.75rem;
+            }
+
+            .hero-buttons {
+                gap: 0.5rem;
+                margin-top: 1.5rem;
+            }
+
+            .btn-primary-custom,
+            .btn-secondary-custom {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+                width: 100%;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .feature-item {
+                padding: 0.75rem;
+                flex-direction: row;
+                align-items: center;
+                text-align: left;
+            }
+
+            .feature-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1.1rem;
+                margin-bottom: 0;
+                margin-right: 0.75rem;
+                flex-shrink: 0;
+            }
+
+            .feature-title {
+                font-size: 0.9rem;
+                margin-bottom: 0.2rem;
+            }
+
+            .feature-description {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* ========== ACCESSIBILITY ========== */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* ========== DARK MODE SUPPORT ========== */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: var(--bg-dark);
+                color: var(--text-light);
+            }
+        }
+
+        /* ========== UTILITY CLASSES ========== */
+        .text-gradient {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        {% block extra_css %}{% endblock %}
+    </style>
 </head>
 <body>
-   
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'home' %}">www.cdoshops.shop</a>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid px-2 px-md-4">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <i class="fas fa-cogs"></i>www.getautoparts.shop
+            </a>
 
-        {% if user.is_authenticated and user.groups.all.0.name != "Store" %}     
-        <a href="{% url 'order_part' %}" class="btn btn-custom ms-3">Order Your Part Now!</a>
-        {% endif %}
-        
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+         
 
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto align-items-lg-center">
-                {% if user.is_authenticated and user.groups.all.0.name == "Store" %} 
-                <li class="nav-item"><a class="nav-link" href="{% url 'store_bids' %}">My Bids</a></li>
-                {% endif %}
-                {% if user.is_authenticated and user.groups.all.0.name != "Store" %}               
-                <li class="nav-item"><a class="nav-link" href="{% url 'my_part_requests' %}">My Requests</a></li>
-                {% endif %}
-                {% if user.is_authenticated and user.groups.all.0.name == "Store" %} 
-                <li class="nav-item"><a class="nav-link" href="{% url 'part_request_list' %}">Part Requests</a></li>
-                {% endif %}
-                {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
-                            {{ user.username }}
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'profile_update' %}">Profile</a></li>
-                            <li>
-                                <form method="post" action="{% url 'logout' %}">
-                                    {% csrf_token %}
-                                    <button type="submit" class="dropdown-item">Logout</button>
-                                </form>
-                            </li>
-                        </ul>
-                    </li>
-                {% else %}                    
-                    <li class="nav-item"><a class="nav-link btn btn-outline-light me-2" href="{% url 'login' %}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link btn btn-outline-warning" href="{% url 'register' %}">Sign Up</a></li>
-                {% endif %}
-            </ul>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-2">
+                    <!-- Store Owner Navigation -->
+                    {% if user.is_authenticated and user.groups.all.0.name == "Store" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'store_bids' %}">
+                                <i class="fas fa-handshake me-2"></i>My Bids
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'part_request_list' %}">
+                                <i class="fas fa-list me-2"></i>Part Requests
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- Customer Navigation -->
+                    {% if user.is_authenticated and user.groups.all.0.name != "Store" %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'order_part' %}">
+                                <i class="fas fa-shopping-cart me-2"></i>Order Parts
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'my_part_requests' %}">
+                                <i class="fas fa-history me-2"></i>My Requests
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    <!-- User Menu -->
+                    {% if user.is_authenticated %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-circle me-2"></i>{{ user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'profile_update' %}">
+                                        <i class="fas fa-edit me-2"></i>Profile Settings
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="post" action="{% url 'logout' %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="dropdown-item">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a href="{% url 'login' %}" class="btn-secondary-custom">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'register' %}" class="btn-primary-custom">Sign Up</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
 
-<!-- Main Content -->
-<main class="container mt-4">
-    <div class="content-box">
+    <!-- Main Content -->
+    <main class="container">
         {% block content %}
-        <h1 class="center-text">Welcome to CDO Shops Auto Parts</h1>
-        <p class="mt-3 fs-5 text-light">Find, request, and bid for automotive parts — all in one place.</p>
-        {% endblock %}
-    </div>
-</main>
+        <div class="hero-content">
+            <h1 class="hero-title">
+              
+                Welcome to www.getautoparts.shop
+            </h1>
+            <p class="hero-subtitle">
+                Your trusted online marketplace for premium automotive spare parts. Find, request, and bid for the parts you need — all in one secure platform.
+            </p>
+            
+            <!-- Features Grid -->
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div>
+                        <p class="feature-title">Secure Transactions</p>
+                        <p class="feature-description">Protected payments</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div>
+                        <p class="feature-title">Fast Delivery</p>
+                        <p class="feature-description">Quick shipping</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div>
+                        <p class="feature-title">24/7 Support</p>
+                        <p class="feature-description">Always here to help</p>
+                    </div>
+                </div>
+            </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-{% block extra_js %}{% endblock %}
+            <!-- Action Buttons -->
+            <div class="hero-buttons">
+                {% if user.is_authenticated and user.groups.all.0.name != "Store" %}
+                    <a href="{% url 'order_part' %}" class="btn-primary-custom">
+                        <i class="fas fa-shopping-cart me-2"></i>Order Your Part Now
+                    </a>
+                    <a href="{% url 'my_part_requests' %}" class="btn-secondary-custom">
+                        <i class="fas fa-history me-2"></i>View My Requests
+                    </a>
+                {% elif user.is_authenticated and user.groups.all.0.name == "Store" %}
+                    <a href="{% url 'store_bids' %}" class="btn-primary-custom">
+                        <i class="fas fa-handshake me-2"></i>View My Bids
+                    </a>
+                    <a href="{% url 'part_request_list' %}" class="btn-secondary-custom">
+                        <i class="fas fa-list me-2"></i>New Requests
+                    </a>
+                {% else %}
+                    <a href="{% url 'register' %}" class="btn-primary-custom">
+                        <i class="fas fa-user-plus me-2"></i>Get Started Today
+                    </a>
+                    <a href="{% url 'login' %}" class="btn-secondary-custom">
+                        <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        {% endblock %}
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Smooth Scroll & Interactions -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Close navbar on link click (mobile)
+            const navbar = document.querySelector('.navbar-collapse');
+            document.querySelectorAll('.navbar-nav a').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (navbar.classList.contains('show')) {
+                        document.querySelector('.navbar-toggler').click();
+                    }
+                });
+            });
+
+            // Active link highlighting
+            const currentLocation = location.pathname;
+            document.querySelectorAll('.navbar-nav a').forEach(link => {
+                if (link.getAttribute('href') === currentLocation) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

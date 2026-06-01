@@ -1,60 +1,245 @@
 {% extends 'orders/landing.html' %}
 {% load humanize %}
 {% block content %}
-<div class="container mt-4">
-    <h2 class="text-center">My Submitted Bids</h2>
+
+<style>
+.status-open {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-closed {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.bid-accepted {
+    border-left: 5px solid #facc15;
+}
+
+.bid-pending {
+    border-left: 5px solid #3b82f6;
+}
+
+.bid-rejected {
+    border-left: 5px solid #ef4444;
+}
+
+.bid-card {
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+
+.bid-label {
+    font-size: .8rem;
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.bid-value {
+    font-weight: 500;
+}
+
+.price-highlight {
+    color: #198754;
+    font-size: 1.15rem;
+    font-weight: bold;
+}
+
+@media (min-width: 768px){
+    .mobile-cards{
+        display:none;
+    }
+}
+
+@media (max-width: 767px){
+    .desktop-table{
+        display:none;
+    }
+}
+</style>
+
+<div class="container py-3">
+
+    <div class="text-center mb-4">
+        <h2 class="fw-bold" style="color: white;">My Submitted Bids</h2>
+        <p class="text-muted">Track the status of all your submitted quotations</p>
+    </div>
 
     {% if bids %}
-    <div class="table-responsive">
-        <table class="table table-hover table-bordered shadow-sm">
-            <thead class="table-dark text-center">
+
+    <!-- MOBILE VIEW -->
+    <div class="mobile-cards">
+
+        {% for bid in bids %}
+        <div class="card shadow-sm bid-card
+            {% if bid.status == 'Accepted' %}
+                bid-accepted
+            {% elif bid.status == 'Rejected' %}
+                bid-rejected
+            {% else %}
+                bid-pending
+            {% endif %}
+        ">
+
+            <div class="card-body">
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+
+                    {% if bid.part_request.status == "Open" %}
+                        <span class="badge bg-success">Open Request</span>
+                    {% else %}
+                        <span class="badge bg-danger">Closed Request</span>
+                    {% endif %}
+
+                    {% if bid.status == "Accepted" %}
+                        <span class="badge bg-warning text-dark">Accepted</span>
+                    {% elif bid.status == "Rejected" %}
+                        <span class="badge bg-danger">Rejected</span>
+                    {% else %}
+                        <span class="badge bg-primary">Pending</span>
+                    {% endif %}
+
+                </div>
+
+                <h5 class="fw-bold">
+                    {{ bid.part_request.part_name }}
+                </h5>
+
+                <p class="text-muted mb-3">
+                    {{ bid.part_request.brand }}
+                </p>
+
+                <div class="mb-2">
+                    <div class="bid-label">Vehicle</div>
+                    <div class="bid-value">
+                        {{ bid.part_request.car_model }}
+                        ({{ bid.part_request.year }})
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <div class="bid-label">Bid Price</div>
+                    <div class="price-highlight">
+                        ₱{{ bid.price|floatformat:2|intcomma }}
+                    </div>
+                </div>
+
+                {% if bid.notes %}
+                <div class="mb-2">
+                    <div class="bid-label">Notes</div>
+                    <div>{{ bid.notes }}</div>
+                </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <div class="bid-label">Submitted</div>
+                    <div>{{ bid.created_at|date:"M d, Y h:i A" }}</div>
+                </div>
+
+                <a href="{% url 'bid_detail_view' bid.id %}"
+                   class="btn btn-primary w-100">
+                    View Details
+                </a>
+
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- DESKTOP VIEW -->
+    <div class="desktop-table table-responsive">
+        <table class="table table-hover align-middle shadow-sm">
+            <thead class="table-dark">
                 <tr>
-                    <th>Request Status</th>
-                    <th>Requested Part</th>
-                    <th>Car Model</th>
+                    <th>Request</th>
+                    <th>Part</th>
+                    <th>Vehicle</th>
                     <th>Price</th>
-                    <th>Notes</th>                 
-                    <th>Status</th>
-                    <th>Date Submitted</th>
-                    <th>Action</th>
+                    <th>Bid Status</th>
+                    <th>Submitted</th>
+                    <th></th>
                 </tr>
             </thead>
+
             <tbody>
-                {% for bid in bids %}
-                <tr>
-                    <td {% if bid.part_request.status == "Open" %} style="background-color:rgb(2, 245, 59);" {% endif %}>
-                        {% if bid.part_request.status == "Open" %}
-                            <span class="badge bg-success">Open</span>
-                        {% else %}
-                            <span class="badge bg-danger">Closed</span>
-                        {% endif %}
-                    </td>
-                    <td >
-                        
-                        <strong>{{ bid.part_request.part_name }}</strong><br>
-                        ({{ bid.part_request.brand }})
-                    </td>
-                    <td >
-                        {{ bid.part_request.car_model }} ({{ bid.part_request.year }})</td>
-                    <td >
-                        {{ bid.price|floatformat:2|intcomma }}</td>
-                    <td >
-                        {{ bid.notes }}</td>
-                    
-                    <td class="text-center">
-                        {{ bid.status }}</td>
-                    <td >
-                        {{ bid.created_at|date:"F d, Y H:i" }}</td>
-                    <td class="text-center" {% if bid.status == "Accepted" %} style="background-color:yellow;" {% endif %}>
-                        <a href="{% url 'bid_detail_view' bid.id %}" class="btn btn-primary btn-sm">Details</a>
-                    </td>
-                </tr>
-                {% endfor %}
+
+            {% for bid in bids %}
+            <tr
+                {% if bid.status == "Accepted" %}
+                    class="table-warning"
+                {% endif %}
+            >
+
+                <td>
+                    {% if bid.part_request.status == "Open" %}
+                        <span class="badge bg-success">Open</span>
+                    {% else %}
+                        <span class="badge bg-danger">Closed</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <strong>{{ bid.part_request.part_name }}</strong><br>
+                    <small class="text-muted">
+                        {{ bid.part_request.brand }}
+                    </small>
+                </td>
+
+                <td>
+                    {{ bid.part_request.car_model }}
+                    ({{ bid.part_request.year }})
+                </td>
+
+                <td>
+                    <span class="fw-bold text-success">
+                        ₱{{ bid.price|floatformat:2|intcomma }}
+                    </span>
+                </td>
+
+                <td>
+                    {% if bid.status == "Accepted" %}
+                        <span class="badge bg-warning text-dark">
+                            Accepted
+                        </span>
+                    {% elif bid.status == "Rejected" %}
+                        <span class="badge bg-danger">
+                            Rejected
+                        </span>
+                    {% else %}
+                        <span class="badge bg-primary">
+                            Pending
+                        </span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    {{ bid.created_at|date:"M d, Y h:i A" }}
+                </td>
+
+                <td>
+                    <a href="{% url 'bid_detail_view' bid.id %}"
+                       class="btn btn-outline-primary btn-sm">
+                        Details
+                    </a>
+                </td>
+
+            </tr>
+            {% endfor %}
+
             </tbody>
         </table>
     </div>
+
     {% else %}
-        <div class="alert alert-warning text-center">You have not submitted any bids yet.</div>
+
+    <div class="alert alert-warning text-center shadow-sm">
+        You have not submitted any bids yet.
+    </div>
+
     {% endif %}
+
 </div>
+
 {% endblock %}

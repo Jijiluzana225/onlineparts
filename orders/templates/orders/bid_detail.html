@@ -1,69 +1,275 @@
-
-
 {% extends 'orders/landing.html' %}
 {% load humanize %}
+
 {% block content %}
-<div class="container mt-5">
-    <div class="card shadow-lg border-0 rounded">
-        <div class="card-header bg-gradient text-white text-center py-3" style="background: linear-gradient(45deg, #28a745, #218838);">
-            <h3 class="mb-0 fw-bold">Bid Details</h3>
-        </div>
-        <div class="card-body p-4">
-            <h4 class="text-primary fw-bold">{{ bid.part_request.part_name }} ({{ bid.part_request.brand }})</h4>
-            <p class="mb-2"><strong>Car Model:</strong> {{ bid.part_request.car_model }} ({{ bid.part_request.year }})</p>
-            <p class="mb-2"><strong>Condition:</strong> 
-                {% if bid.part_request.brand_new %} <span class="badge bg-info text-dark px-2 py-1">Brand New</span> {% endif %}
-                {% if bid.part_request.used %} <span class="badge bg-warning text-dark px-2 py-1">Used</span> {% endif %}
-            </p>
-            <hr class="my-4">
-
-            <h4 class="text-success fw-bold">Bid Information</h4>
-            <p class="mb-2"><strong>Store:</strong> <span class="text-primary fw-bold">{{ bid.store.completename }}</span></p>
-            <p class="mb-3"><strong>Condition:</strong> {{ bid.condition }}</p>
-
-            <p class="mb-2"><strong>Bid Price:</strong> 
-                <span class="text-danger fw-bold fs-4">
-                    {{ bid.price|floatformat:2|intcomma }}
-                </span>
-            </p>
-            <p class="mb-3"><strong>Notes:</strong> {{ bid.notes }}</p>
-
-            <h5 class="mt-4 text-dark fw-bold">Bid Images:</h5>
-            <div class="d-flex flex-wrap gap-3">
-                {% if bid.image1 %}
-                    <a href="{{ bid.image1.url }}" target="_blank">
-                        <img src="{{ bid.image1.url }}" class="img-thumbnail rounded shadow-sm hover-zoom" style="max-width: 300px;">
-                    </a>
-                {% endif %}
-                {% if bid.image2 %}
-                    <a href="{{ bid.image2.url }}" target="_blank">
-                        <img src="{{ bid.image2.url }}" class="img-thumbnail rounded shadow-sm hover-zoom" style="max-width: 300px;">
-                    </a>
-                {% endif %}
-            </div>
-
-            <p class="mt-4"><strong>Bid Submitted On:</strong> <span class="text-muted">{{ bid.created_at|date:"F d, Y H:i" }}</span></p>
-        </div>
-
-        <div class="card-footer d-flex justify-content-between align-items-center p-3">
-            <a href="{% url 'my_part_requests' %}" class="btn btn-outline-secondary px-4 py-2 fw-bold">⬅ Back to My Requests</a>
-            {% if bid.part_request.status == "Open" %}
-                <form method="post" action="{% url 'accept_bid' bid.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-success px-4 py-2 fw-bold">✔ Accept Bid</button>
-                </form>
-            {% endif %}
-        </div>
-    </div>
-</div>
 
 <style>
-    .hover-zoom {
-        transition: transform 0.3s ease-in-out;
+.detail-label{
+    font-size:.85rem;
+    color:#6c757d;
+    font-weight:600;
+}
+
+.detail-value{
+    font-size:1rem;
+    font-weight:500;
+}
+
+.price-highlight{
+    color:#198754;
+    font-size:2rem;
+    font-weight:700;
+}
+
+.section-card{
+    border-radius:12px;
+    background:#f8f9fa;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.hover-zoom{
+    transition:.3s;
+}
+
+.hover-zoom:hover{
+    transform:scale(1.03);
+}
+
+.bid-image{
+    width:100%;
+    border-radius:10px;
+    object-fit:cover;
+}
+
+@media(max-width:768px){
+
+    .price-highlight{
+        font-size:1.5rem;
     }
-    .hover-zoom:hover {
-        transform: scale(1.05);
+
+    .card-footer{
+        flex-direction:column;
+        gap:10px;
     }
+
+    .card-footer .btn{
+        width:100%;
+    }
+}
 </style>
+
+<div class="container mt-4 mb-5">
+
+
+<div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+    <!-- HEADER -->
+    <div class="card-header text-center py-3 border-0"
+         style="background: linear-gradient(135deg,#198754,#20c997);">
+        <h3 class="mb-0 fw-bold text-white">
+            Bid Details
+        </h3>
+    </div>
+
+    <!-- BODY -->
+    <div class="card-body p-3 p-md-4">
+
+        <!-- REQUEST INFORMATION -->
+        <div class="section-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="fw-bold text-primary mb-0">
+                    {{ bid.part_request.part_name }}
+                </h4>
+
+                {% if bid.part_request.status == "Open" %}
+                    <span class="badge bg-success">
+                        Open Request
+                    </span>
+                {% else %}
+                    <span class="badge bg-danger">
+                        Closed Request
+                    </span>
+                {% endif %}
+
+            </div>
+
+            <p class="text-muted mb-3">
+                {{ bid.part_request.brand }}
+            </p>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">
+                        Vehicle
+                    </div>
+
+                    <div class="detail-value">
+                        {{ bid.part_request.car_model }}
+                        ({{ bid.part_request.year }})
+                    </div>
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    <div class="detail-label">
+                        Requested Condition
+                    </div>
+
+                    <div>
+                        {% if bid.part_request.brand_new %}
+                            <span class="badge bg-info text-dark">
+                                Brand New
+                            </span>
+                        {% endif %}
+
+                        {% if bid.part_request.used %}
+                            <span class="badge bg-warning text-dark">
+                                Used
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- BID INFORMATION -->
+        <div class="section-card">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h4 class="fw-bold text-success mb-0">
+                    Bid Information
+                </h4>
+
+                {% if bid.status == "Accepted" %}
+                    <span class="badge bg-warning text-dark">
+                        Accepted
+                    </span>
+                {% elif bid.status == "Rejected" %}
+                    <span class="badge bg-danger">
+                        Rejected
+                    </span>
+                {% else %}
+                    <span class="badge bg-primary">
+                        Pending
+                    </span>
+                {% endif %}
+
+            </div>
+
+            <div class="mb-3">
+                <div class="detail-label">
+                    Store
+                </div>
+
+                <div class="detail-value text-primary fw-bold">
+                    {{ bid.store.completename }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="detail-label">
+                    Part Condition
+                </div>
+
+                <div class="detail-value">
+                    {{ bid.condition }}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <div class="detail-label">
+                    Bid Price
+                </div>
+
+                <div class="price-highlight">
+                    ₱{{ bid.price|floatformat:2|intcomma }}
+                </div>
+            </div>
+
+            {% if bid.notes %}
+            <div class="mb-2">
+                <div class="detail-label">
+                    Notes
+                </div>
+
+                <div>
+                    {{ bid.notes }}
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- IMAGES -->
+        {% if bid.image1 or bid.image2 %}
+        <div class="section-card">
+
+            <h5 class="fw-bold mb-3">
+                Bid Images
+            </h5>
+
+            <div class="row g-3">
+
+                {% if bid.image1 %}
+                <div class="col-6 col-md-4">
+                    <a href="{{ bid.image1.url }}" target="_blank">
+                        <img src="{{ bid.image1.url }}"
+                             class="img-fluid shadow-sm hover-zoom bid-image">
+                    </a>
+                </div>
+                {% endif %}
+
+                {% if bid.image2 %}
+                <div class="col-6 col-md-4">
+                    <a href="{{ bid.image2.url }}" target="_blank">
+                        <img src="{{ bid.image2.url }}"
+                             class="img-fluid shadow-sm hover-zoom bid-image">
+                    </a>
+                </div>
+                {% endif %}
+
+            </div>
+
+        </div>
+        {% endif %}
+
+        <div class="text-muted small mt-3">
+            <strong>Submitted:</strong>
+            {{ bid.created_at|date:"F d, Y h:i A" }}
+        </div>
+
+    </div>
+
+    <!-- FOOTER -->
+    <div class="card-footer bg-white d-flex justify-content-between align-items-center p-3">
+
+        <a href="{% url 'my_part_requests' %}"
+           class="btn btn-outline-secondary fw-bold px-4">
+            ⬅ Back to My Requests
+        </a>
+
+        {% if bid.part_request.status == "Open" %}
+            <form method="post" action="{% url 'accept_bid' bid.id %}">
+                {% csrf_token %}
+
+                <button type="submit"
+                        class="btn btn-success fw-bold px-4">
+                    ✔ Accept Bid
+                </button>
+            </form>
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+</div>
 
 {% endblock %}

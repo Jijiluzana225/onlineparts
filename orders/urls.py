@@ -1,6 +1,11 @@
 from django.urls import path
 from .views import *
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
+
+
+
+
 
 
 urlpatterns = [
@@ -24,6 +29,10 @@ urlpatterns = [
     path("bidview/<int:pk>/delete/", BidDeleteView.as_view(), name="bid_delete"),
     
     path('delete-part-request/<int:pk>/', delete_part_request, name='delete_part_request'),
+    path('password-reset/', PasswordResetView.as_view(template_name='registration/password_reset.html'), name='password_reset'),
+    path('password-reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='registration/password_reset_confirm.html'), name='password_reset_confirm'),
+
+    
 
 ]
 

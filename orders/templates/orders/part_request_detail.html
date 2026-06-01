@@ -1,64 +1,264 @@
 {% extends 'orders/landing.html' %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-lg border-0 rounded">
-                <div class="card-header bg-primary text-white text-center">
-                    <h3 class="mb-0">{{ part_request.part_name }} ({{ part_request.brand }})</h3>
-                </div>
-                <div class="card-body p-4">
-                    <p class="mb-2"><strong>Description:</strong> {{ part_request.description }}</p>
-                    <p class="mb-2"><strong>Qty:</strong> {{ part_request.qty }}</p>
-                    <p class="mb-2"><strong>Car Model:</strong> {{ part_request.car_model }} ({{ part_request.year }})</p>
-                    <p class="mb-2"><strong>Status:</strong>
-                        {% if part_request.status == "Open" %}
-                            <span class="badge bg-success px-3 py-2 fs-6">Open</span>
-                        {% else %}
-                            <span class="badge bg-danger px-3 py-2 fs-6">Closed</span>
-                        {% endif %}
-                    </p>
-                    <p class="mb-2"><strong>Date Requested:</strong> {{ part_request.created_at|date:"F d, Y H:i" }}</p>
-                    
-                    <p class="mb-2"><strong>Condition:</strong> 
-                        {% if part_request.brand_new %} 
-                            <span class="badge bg-info text-dark px-2 py-1">Brand New</span> 
-                        {% endif %}
-                        {% if part_request.used %} 
-                            <span class="badge bg-warning text-dark px-2 py-1">Used</span> 
-                        {% endif %}
-                    </p>
 
-                    <!-- Image Section -->
-                    <div class="text-center mt-4">
-                        <strong>Images:</strong>
-                        <div class="d-flex justify-content-center flex-wrap mt-3">
-                            {% if part_request.image1 %}
-                                <a href="{{ part_request.image1.url }}" target="_blank" class="m-2">
-                                    <img src="{{ part_request.image1.url }}" class="img-fluid rounded shadow-sm" style="max-width: 100%; height: auto; width: 300px;">
-                                </a>
-                            {% endif %}
-                            {% if part_request.image2 %}
-                                <a href="{{ part_request.image2.url }}" target="_blank" class="m-2">
-                                    <img src="{{ part_request.image2.url }}" class="img-fluid rounded shadow-sm" style="max-width: 100%; height: auto; width: 300px;">
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+<style>
 
-                {% if user.is_authenticated and user.is_store and part_request.status == "Open" %}
-                <div class="text-center mb-3">
-                    <a href="{% url 'place_bid' part_request.id %}" class="btn btn-success">Place a Bid</a>
-                </div>
-                {% endif %}
-                
-                <div class="card-footer text-center">
-                    <a href="{% url 'part_request_list' %}" class="btn btn-outline-secondary px-4">Back to List</a>
-                </div>
+.detail-label{
+    font-size:.85rem;
+    color:#6c757d;
+    font-weight:600;
+}
+
+.detail-value{
+    font-size:1rem;
+    font-weight:500;
+}
+
+.section-card{
+    border-radius:12px;
+    background:#f8f9fa;
+    padding:15px;
+    margin-bottom:15px;
+}
+
+.hover-zoom{
+    transition:.3s;
+}
+
+.hover-zoom:hover{
+    transform:scale(1.03);
+}
+
+.request-image{
+    width:100%;
+    border-radius:10px;
+    object-fit:cover;
+}
+
+@media(max-width:768px){
+
+    .card-footer{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .card-footer .btn{
+        width:100%;
+    }
+
+}
+
+</style>
+
+<div class="container mt-4 mb-5">
+
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+
+            <!-- HEADER -->
+            <div class="card-header text-center py-3 border-0"
+                 style="background: linear-gradient(135deg,#0d6efd,#3b82f6);">
+
+                <h3 class="mb-0 fw-bold text-white">
+                    {{ part_request.part_name }}
+                </h3>
+
+                <small class="text-white">
+                    {{ part_request.brand }}
+                </small>
+
             </div>
+
+            <!-- BODY -->
+            <div class="card-body p-3 p-md-4">
+
+                <!-- REQUEST INFO -->
+                <div class="section-card">
+
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+
+                        <h4 class="fw-bold text-primary mb-0">
+                            Request Information
+                        </h4>
+
+                        {% if part_request.status == "Open" %}
+                            <span class="badge bg-success">
+                                Open
+                            </span>
+                        {% else %}
+                            <span class="badge bg-danger">
+                                Closed
+                            </span>
+                        {% endif %}
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <div class="detail-label">
+                            Description
+                        </div>
+
+                        <div class="detail-value">
+                            {{ part_request.description }}
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <div class="detail-label">
+                                Quantity
+                            </div>
+
+                            <div class="detail-value">
+                                {{ part_request.qty }}
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+
+                            <div class="detail-label">
+                                Vehicle
+                            </div>
+
+                            <div class="detail-value">
+                                {{ part_request.car_model }}
+                                ({{ part_request.year }})
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <div class="detail-label">
+                            Requested Condition
+                        </div>
+
+                        <div>
+
+                            {% if part_request.brand_new %}
+                                <span class="badge bg-info text-dark">
+                                    Brand New
+                                </span>
+                            {% endif %}
+
+                            {% if part_request.used %}
+                                <span class="badge bg-warning text-dark">
+                                    Used
+                                </span>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <div class="detail-label">
+                            Date Requested
+                        </div>
+
+                        <div class="detail-value">
+                            {{ part_request.created_at|date:"F d, Y h:i A" }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- IMAGES -->
+                {% if part_request.image1 or part_request.image2 %}
+
+                <div class="section-card">
+
+                    <h5 class="fw-bold mb-3">
+                        Images
+                    </h5>
+
+                    <div class="row g-3">
+
+                        {% if part_request.image1 %}
+                        <div class="col-6 col-md-4">
+
+                            <a href="{{ part_request.image1.url }}"
+                               target="_blank">
+
+                                <img src="{{ part_request.image1.url }}"
+                                     class="img-fluid shadow-sm hover-zoom request-image">
+
+                            </a>
+
+                        </div>
+                        {% endif %}
+
+                        {% if part_request.image2 %}
+                        <div class="col-6 col-md-4">
+
+                            <a href="{{ part_request.image2.url }}"
+                               target="_blank">
+
+                                <img src="{{ part_request.image2.url }}"
+                                     class="img-fluid shadow-sm hover-zoom request-image">
+
+                            </a>
+
+                        </div>
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+            <!-- ACTION BUTTON -->
+            {% if user.is_authenticated and user.is_store and part_request.status == "Open" %}
+
+            <div class="px-4 pb-3">
+
+                <a href="{% url 'place_bid' part_request.id %}"
+                   class="btn btn-success w-100 fw-bold py-2">
+
+                    💰 Place a Bid
+
+                </a>
+
+            </div>
+
+            {% endif %}
+
+            <!-- FOOTER -->
+            <div class="card-footer bg-white d-flex justify-content-center p-3">
+
+                <a href="{% url 'part_request_list' %}"
+                   class="btn btn-outline-secondary px-4 fw-bold">
+
+                    ⬅ Back to List
+
+                </a>
+
+            </div>
+
         </div>
+
     </div>
+
 </div>
+
+
+</div>
+
 {% endblock %}

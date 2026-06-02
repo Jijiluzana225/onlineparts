@@ -89,7 +89,7 @@ class PartRequestForm(forms.ModelForm):
         }
 
     image1 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control","accept":"image/*","capture":"environment"}))
-    image2 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control"}))
+    image2 = forms.ImageField(required=True, widget=forms.FileInput(attrs={"class": "form-control","accept":"image/*","capture":"environment"}))
 
 
 

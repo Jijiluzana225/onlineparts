@@ -156,6 +156,7 @@ LOGOUT_REDIRECT_URL = '/login/'  # Redirect to login after logout
 
 USE_I18N = True
 
+TIME_ZONE = 'Asia/Manila'
 USE_TZ = True
 
 STATIC_URL = '/static/'

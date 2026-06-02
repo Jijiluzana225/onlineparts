@@ -6,6 +6,9 @@ from cloudinary_storage.storage import MediaCloudinaryStorage
 from PIL import Image
 from io import BytesIO
 from django.core.files.base import ContentFile
+from django.utils import timezone
+
+
 
 class Customer(AbstractUser):  
     completename = models.CharField(max_length=250)  
@@ -137,6 +140,8 @@ class PartRequest(models.Model):
 
     def __str__(self):
         return f"{self.part_name} ({self.brand} - {self.car_model})"
+   
+   
 
 
 BID_STATUS_CHOICES = [

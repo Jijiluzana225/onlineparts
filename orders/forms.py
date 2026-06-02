@@ -51,11 +51,19 @@ from django import forms
 from .models import Customer
 
 class CustomerUpdateForm(forms.ModelForm):
+    
     is_store = forms.BooleanField(
-        required=False,
+        required=False,        
         widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         label="Register as a Store"
     )
+    address = forms.CharField(
+        required=True,
+        widget=forms.Textarea(attrs={
+        "class": "form-control",
+        "rows": 3
+    })
+)
     class Meta:
         model = Customer
         fields = ["is_store", "completename", "phone_number", "address"]
@@ -67,7 +75,8 @@ class CustomerUpdateForm(forms.ModelForm):
         widgets = {
             "completename": forms.TextInput(attrs={"class": "form-control"}),
             "phone_number": forms.TextInput(attrs={"class": "form-control"}),
-            "address": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
+ 
+            
         }
 
 

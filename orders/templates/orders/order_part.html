@@ -1,79 +1,354 @@
 {% extends 'orders/landing.html' %}
 
-
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-5 mb-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="text-center">Order a Part</h3>
+        <div class="col-md-10">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-gradient bg-primary text-white py-4">
+                    <h3 class="text-center m-0">
+                        <i class="fas fa-tools"></i> Order a Part
+                    </h3>
                 </div>
-                <div class="card-body">
-                    <form method="post" enctype="multipart/form-data">
+                
+                <div class="card-body p-4">
+                    {% if messages %}
+                        <div class="alert alert-dismissible fade show" role="alert">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="post" enctype="multipart/form-data" id="partRequestForm" novalidate>
                         {% csrf_token %}
                         
-                        <div class="mb-3 p-3 border rounded">
-                            <label class="form-label fw-bold">Condition</label> <!-- Container Label -->
+                        <!-- Condition Section -->
+                        <div class="mb-4 p-3 border rounded bg-light">
+                            <label class="form-label fw-bold mb-3">
+                                <i class="fas fa-box"></i> Part Condition
+                            </label>
                             <div class="row">
-                                <div class="col">
-                                    <label class="form-label">Brand New</label>
-                                    {{ form.brand_new }}
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        {{ form.brand_new }}
+                                        <label class="form-check-label" for="{{ form.brand_new.id_for_label }}">
+                                            <i class="fas fa-star text-warning"></i> Brand New
+                                        </label>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <label class="form-label">Used</label>
-                                    {{ form.used }}
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        {{ form.used }}
+                                        <label class="form-check-label" for="{{ form.used.id_for_label }}">
+                                            <i class="fas fa-redo"></i> Used
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            {% if form.brand_new.errors or form.used.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.brand_new.errors }} {{ form.used.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+
+                        <!-- Vehicle Information Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="mb-3 text-primary">
+                                    <i class="fas fa-car"></i> Vehicle Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Brand <span class="text-danger">*</span></label>
+                                {{ form.brand }}
+                                {% if form.brand.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.brand.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Year <span class="text-danger">*</span></label>
+                                {{ form.year }}
+                                {% if form.year.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.year.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label class="form-label fw-bold">Car Model <span class="text-danger">*</span></label>
+                                {{ form.car_model }}
+                                {% if form.car_model.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.car_model.errors }}
+                                    </div>
+                                {% endif %}
+                                <small class="form-text text-muted">e.g., Civic, Camry, Pickup Truck</small>
+                            </div>
+                        </div>
+
+                        <!-- Basic Information Section -->
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <h5 class="mb-3 text-primary">
+                                    <i class="fas fa-info-circle"></i> Part Information
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Part Name <span class="text-danger">*</span></label>
+                                {{ form.part_name }}
+                                {% if form.part_name.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {{ form.part_name.errors }}
+                                    </div>
+                                {% endif %}
+                                <small class="form-text text-muted">e.g., Engine Block, Alternator, Door Handle</small>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Quantity <span class="text-danger">*</span></label>
+                                <input type="number" name="qty" class="form-control" value="{{ form.qty.value|default:1 }}" min="1" max="999" required>
+                                <small class="form-text text-muted">How many parts do you need?</small>
+                            </div>
+                        </div>
+
+                        <!-- Description Section -->
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Part Description <span class="text-danger">*</span></label>
+                            {{ form.description }}
+                            {% if form.description.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.description.errors }}
+                                </div>
+                            {% endif %}
+                            <small class="form-text text-muted">Provide detailed information about the part you're looking for (condition, specifications, etc.)</small>
+                        </div>
+
+                        <!-- Image Upload Section -->
+                        <div class="mb-4">
+                            <h5 class="mb-3 text-primary">
+                                <i class="fas fa-images"></i> Sample Pictures
+                            </h5>
+                            <p class="text-muted">Upload clear pictures of the part. Images will be resized to 400x400px automatically.</p>
+
+                            <div class="row">
+                                <!-- Image 1 -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Picture 1 <span class="text-danger">*</span></label>
+                                    <div class="upload-area border-2 border-dashed rounded p-4 text-center cursor-pointer" id="uploadArea1">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i>
+                                        <p class="mb-0">Click to upload or drag and drop</p>
+                                        <small class="text-muted">PNG, JPG, GIF up to 5MB</small>
+                                        {{ form.image1 }}
+                                    </div>
+                                    <div id="imagePreview1" class="mt-3">
+                                        {% if form.image1.value %}
+                                            <img src="{{ form.image1.value.url }}" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
+                                            <button type="button" class="btn btn-sm btn-danger mt-2" onclick="clearImage('image1')">
+                                                <i class="fas fa-trash"></i> Remove
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                    {% if form.image1.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.image1.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Image 2 -->
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label fw-bold">Picture 2 <span class="text-danger">*</span></label>
+                                    <div class="upload-area border-2 border-dashed rounded p-4 text-center cursor-pointer" id="uploadArea2">
+                                        <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i>
+                                        <p class="mb-0">Click to upload or drag and drop</p>
+                                        <small class="text-muted">PNG, JPG, GIF up to 5MB</small>
+                                        {{ form.image2 }}
+                                    </div>
+                                    <div id="imagePreview2" class="mt-3">
+                                        {% if form.image2.value %}
+                                            <img src="{{ form.image2.value.url }}" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
+                                            <button type="button" class="btn btn-sm btn-danger mt-2" onclick="clearImage('image2')">
+                                                <i class="fas fa-trash"></i> Remove
+                                            </button>
+                                        {% endif %}
+                                    </div>
+                                    {% if form.image2.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.image2.errors }}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
+
                         
-                        <div class="mb-3">
-                            <label class="form-label">Part Name</label>
-                            {{ form.part_name }}
-                        </div>
 
-
-                        <div class="mb-3">
-                            <label class="form-label">Description</label>
-                            {{ form.description }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Brand</label>
-                            {{ form.brand }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Car Model</label>
-                            {{ form.car_model }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Year</label>
-                            {{ form.year }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Upload Sample Picture 1</label>
-                            {{ form.image1 }}
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Upload Sample Picture 2</label>
-                            {{ form.image2 }}
-                        </div>
-
-                        <button type="submit" class="btn btn-primary w-100">Submit Request</button>
                         
-                        <button type="button" class="btn btn-secondary w-100 mt-3" onclick="location.href='{% url 'home' %}'">
-                            Close
-                        </button>
-                        
-                        
+
+                        <!-- Form Actions -->
+                        <div class="row mt-4">
+                            <div class="col-md-6 mb-2">
+                                <button type="submit" class="btn btn-primary w-100 py-2">
+                                    <i class="fas fa-paper-plane"></i> Submit Request
+                                </button>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <button type="button" class="btn btn-outline-secondary w-100 py-2" onclick="location.href='{% url 'home' %}'">
+                                    <i class="fas fa-times-circle"></i> Cancel
+                                </button>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- CSS Styling -->
+<style>
+    .upload-area {
+        transition: all 0.3s ease;
+        cursor: pointer;
+        background-color: #f8f9fa;
+    }
+
+    .upload-area:hover {
+        background-color: #e9ecef;
+        border-color: #0d6efd !important;
+    }
+
+    .upload-area.dragover {
+        background-color: #cfe2ff;
+        border-color: #0d6efd !important;
+    }
+
+    .upload-area input[type="file"] {
+        display: none;
+    }
+
+    .form-control, .form-select {
+        border-radius: 0.5rem;
+        border: 1px solid #dee2e6;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    }
+
+    .bg-gradient {
+        background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+    }
+
+    .card-header {
+        border-bottom: 3px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .text-danger {
+        font-weight: bold;
+    }
+
+    h5 {
+        font-weight: 600;
+    }
+
+    .img-thumbnail {
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+    }
+</style>
+
+<!-- JavaScript for Image Preview and Drag-Drop -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageAreas = ['uploadArea1', 'uploadArea2'];
+        
+        imageAreas.forEach(areaId => {
+            const area = document.getElementById(areaId);
+            const inputId = areaId === 'uploadArea1' ? 'id_image1' : 'id_image2';
+            const previewId = areaId === 'uploadArea1' ? 'imagePreview1' : 'imagePreview2';
+            const input = document.getElementById(inputId);
+            
+            // Click to upload
+            area.addEventListener('click', () => input.click());
+            
+            // File selection
+            input.addEventListener('change', function(e) {
+                handleFileSelect(e, previewId);
+            });
+            
+            // Drag and drop
+            area.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                area.classList.add('dragover');
+            });
+            
+            area.addEventListener('dragleave', () => {
+                area.classList.remove('dragover');
+            });
+            
+            area.addEventListener('drop', (e) => {
+                e.preventDefault();
+                area.classList.remove('dragover');
+                
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    input.files = files;
+                    const event = new Event('change', { bubbles: true });
+                    input.dispatchEvent(event);
+                }
+            });
+        });
+    });
+
+    function handleFileSelect(e, previewId) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const preview = document.getElementById(previewId);
+                preview.innerHTML = `
+                    <img src="${event.target.result}" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
+                    <p class="mt-2 text-success"><i class="fas fa-check-circle"></i> File selected: ${file.name}</p>
+                    <button type="button" class="btn btn-sm btn-danger" onclick="clearImage('${previewId}')">
+                        <i class="fas fa-trash"></i> Remove
+                    </button>
+                `;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function clearImage(imageId) {
+        const previewId = imageId === 'image1' ? 'imagePreview1' : 'imagePreview2';
+        const inputId = imageId === 'image1' ? 'id_image1' : 'id_image2';
+        
+        document.getElementById(inputId).value = '';
+        document.getElementById(previewId).innerHTML = '';
+    }
+
+    // Form validation
+    const form = document.getElementById('partRequestForm');
+    form.addEventListener('submit', function(e) {
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    });
+</script>
 {% endblock %}

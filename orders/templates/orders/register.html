@@ -5,593 +5,219 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Sign Up - www.getautoparts.shop{% endblock %}</title>
-    
-    <!-- Bootstrap 5 -->
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        /* ========== ROOT VARIABLES ========== */
-        :root {
-            --primary: #ff6f00;
-            --primary-dark: #e55100;
-            --secondary: #ffb703;
-            --bg-dark: #0f1419;
-            --bg-light: #f8f9fa;
-            --text-dark: #1a1a1a;
-            --text-light: #ffffff;
-            --border-color: #e9ecef;
-            --success: #10b981;
-            --danger: #ef4444;
-            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
-        }
-
-        /* ========== GLOBAL STYLES ========== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body {
-            height: 100%;
-            overflow-x: hidden;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #0f1419 100%);
-            color: var(--text-dark);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ========== NAVBAR STYLES ========== */
-        .navbar {
-            background: rgba(15, 20, 25, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 111, 0, 0.1);
-            padding: 0.75rem 0;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .navbar-brand {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 800;
-            font-size: clamp(1rem, 3vw, 1.5rem);
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            transition: transform 0.3s ease;
-            text-decoration: none;
-        }
-
-        .navbar-brand:hover {
-            transform: scale(1.05);
-        }
-
-        .navbar-brand i {
-            margin-right: 0.5rem;
-            -webkit-text-fill-color: var(--primary);
-        }
-
-        .navbar-nav .nav-link {
-            color: #b0b0b0 !important;
-            font-weight: 500;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            position: relative;
-            margin: 0.25rem 0;
-            text-decoration: none;
-        }
-
-        .navbar-nav .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            transition: width 0.3s ease;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: var(--text-light) !important;
-        }
-
-        .navbar-nav .nav-link:hover::after {
-            width: 100%;
-        }
-
-        /* ========== MAIN CONTENT ========== */
-        main {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
-            margin-top: 0;
-        }
-
-        /* ========== FORM CONTAINER ========== */
-        .auth-container {
-            width: 100%;
-            max-width: 450px;
-            animation: fadeInUp 0.6s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .auth-card {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .auth-card:hover {
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .auth-header {
-            background: linear-gradient(135deg, var(--primary), #ff8c00);
-            padding: 2rem 2rem 2.5rem;
-            text-align: center;
-            color: var(--text-light);
-        }
-
-        .auth-header h2 {
-            font-family: 'Poppins', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .auth-header p {
-            font-size: 0.95rem;
-            opacity: 0.9;
-            margin-bottom: 0;
-        }
-
-        .auth-header i {
-            font-size: 2.5rem;
-            margin-bottom: 0.75rem;
-            display: block;
-            opacity: 0.95;
-        }
-
-        .auth-body {
-            padding: 2.5rem 2rem;
-        }
-
-        /* ========== FORM FIELDS ========== */
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-label {
-            font-weight: 600;
-            color: var(--text-dark);
-            font-size: 0.95rem;
-            margin-bottom: 0.6rem;
-            display: block;
-        }
-
-        .form-control {
-            border: 1.5px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            background-color: var(--bg-light);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.1);
-            background-color: var(--text-light);
-        }
-
-        .form-control::placeholder {
-            color: #a0a0a0;
-        }
-
-        .form-select {
-            border: 1.5px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
-            transition: all 0.3s ease;
-            background-color: var(--bg-light);
-        }
-
-        .form-select:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(255, 111, 0, 0.1);
-        }
-
-        /* ========== ERROR MESSAGES ========== */
-        .invalid-feedback,
-        .form-error {
-            display: block;
-            color: var(--danger);
-            font-size: 0.85rem;
-            margin-top: 0.4rem;
-            font-weight: 500;
-        }
-
-        .form-control.is-invalid,
-        .form-select.is-invalid {
-            border-color: var(--danger);
-        }
-
-        .form-control.is-invalid:focus,
-        .form-select.is-invalid:focus {
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-        }
-
-        /* ========== BUTTONS ========== */
-        .btn-auth {
-            width: 100%;
-            padding: 0.75rem 1.5rem;
-            font-weight: 600;
-            font-size: 1rem;
-            border-radius: 8px;
-            border: none;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-        }
-
-        .btn-primary-auth {
-            background: linear-gradient(135deg, var(--primary), #ff8c00);
-            color: var(--text-light);
-            box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
-        }
-
-        .btn-primary-auth:hover {
-            background: linear-gradient(135deg, var(--primary-dark), #ff6f00);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(255, 111, 0, 0.4);
-            color: var(--text-light);
-            text-decoration: none;
-        }
-
-        .btn-primary-auth:active {
-            transform: translateY(0);
-        }
-
-        /* ========== FOOTER TEXT ========== */
-        .auth-footer {
-            padding: 1.5rem 2rem;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            background-color: #fafafa;
-        }
-
-        .auth-footer p {
-            margin: 0;
-            font-size: 0.95rem;
-            color: var(--text-dark);
-        }
-
-        .auth-footer a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .auth-footer a:hover {
-            color: var(--primary-dark);
-            text-decoration: underline;
-        }
-
-        /* ========== DIVIDER ========== */
-        .divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-            color: #a0a0a0;
-            font-size: 0.9rem;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background-color: var(--border-color);
-        }
-
-        .divider span {
-            padding: 0 0.75rem;
-        }
-
-        /* ========== RESPONSIVE DESIGN ========== */
-        @media (max-width: 576px) {
-            main {
-                padding: 1rem 0.75rem;
-                min-height: calc(100vh - 60px);
-            }
-
-            .auth-container {
-                max-width: 100%;
-            }
-
-            .auth-header {
-                padding: 1.5rem 1.5rem 2rem;
-            }
-
-            .auth-header h2 {
-                font-size: 1.5rem;
-            }
-
-            .auth-header i {
-                font-size: 2rem;
-            }
-
-            .auth-body {
-                padding: 1.75rem 1.5rem;
-            }
-
-            .auth-footer {
-                padding: 1.25rem 1.5rem;
-            }
-
-            .form-group {
-                margin-bottom: 1.25rem;
-            }
-
-            .form-label {
-                font-size: 0.9rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .form-control,
-            .form-select {
-                font-size: 16px; /* Prevents zoom on iOS */
-                padding: 0.7rem 0.9rem;
-            }
-
-            .btn-auth {
-                padding: 0.7rem 1.25rem;
-                font-size: 0.95rem;
-            }
-        }
-
-        @media (max-width: 992px) {
-            .auth-card {
-                max-width: 100%;
-            }
-        }
-
-        /* ========== ACCESSIBILITY ========== */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* ========== DARK MODE SUPPORT ========== */
-        @media (prefers-color-scheme: dark) {
-            .auth-card {
-                background: rgba(30, 30, 30, 0.98);
-                border-color: rgba(255, 111, 0, 0.1);
-            }
-
-            .auth-body {
-                color: var(--text-light);
-            }
-
-            .form-label {
-                color: #e0e0e0;
-            }
-
-            .form-control,
-            .form-select {
-                background-color: rgba(255, 255, 255, 0.05);
-                color: var(--text-light);
-                border-color: rgba(255, 111, 0, 0.2);
-            }
-
-            .form-control:focus,
-            .form-select:focus {
-                background-color: rgba(255, 255, 255, 0.08);
-            }
-
-            .form-control::placeholder {
-                color: #808080;
-            }
-
-            .auth-footer {
-                background-color: rgba(0, 0, 0, 0.2);
-                border-top-color: rgba(255, 111, 0, 0.1);
-            }
-
-            .auth-footer p {
-                color: #e0e0e0;
-            }
-
-            .divider::before,
-            .divider::after {
-                background-color: rgba(255, 111, 0, 0.1);
-            }
-
-            .divider {
-                color: #808080;
-            }
-        }
-
-        {% block extra_css %}{% endblock %}
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+    --primary:#ff6f00;
+    --primary-dark:#e55100;
+    --bg:#0f1419;
+    --text:#ffffff;
+    --card:#ffffff;
+}
+
+/* ========== GLOBAL (MOBILE FIRST) ========== */
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    font-family:Inter,sans-serif;
+    background:linear-gradient(135deg,#0f1419,#1a2332);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* ========== NAVBAR ========== */
+.navbar{
+    padding:.6rem 1rem;
+    background:rgba(15,20,25,.95);
+    backdrop-filter:blur(10px);
+}
+
+.navbar-brand{
+    font-size:clamp(1rem,4vw,1.3rem);
+    font-weight:800;
+    color:#fff !important;
+}
+
+/* ========== MAIN ========== */
+main{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:1rem;
+}
+
+/* ========== CARD (MOBILE FIRST) ========== */
+.auth-container{
+    width:100%;
+    max-width:420px;
+}
+
+.auth-card{
+    background:#fff;
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+/* HEADER */
+.auth-header{
+    background:linear-gradient(135deg,var(--primary),#ff8c00);
+    color:#fff;
+    text-align:center;
+    padding:1.5rem 1rem;
+}
+
+.auth-header i{
+    font-size:2rem;
+    margin-bottom:.5rem;
+}
+
+.auth-header h2{
+    font-size:clamp(1.2rem,5vw,1.6rem);
+    font-weight:700;
+}
+
+.auth-header p{
+    font-size:.9rem;
+    opacity:.9;
+}
+
+/* BODY */
+.auth-body{
+    padding:1.2rem;
+}
+
+/* FORM */
+.form-group{
+    margin-bottom:1rem;
+}
+
+.form-label{
+    font-weight:600;
+    font-size:.9rem;
+}
+
+.form-control,.form-select{
+    width:100%;
+    padding:.75rem;
+    border-radius:10px;
+    border:1px solid #ddd;
+    font-size:16px; /* prevents zoom on mobile */
+}
+
+/* BUTTON */
+.btn-auth{
+    width:100%;
+    padding:.8rem;
+    border:none;
+    border-radius:10px;
+    font-weight:700;
+    background:linear-gradient(135deg,var(--primary),#ff8c00);
+    color:#fff;
+    margin-top:.5rem;
+}
+
+/* FOOTER */
+.auth-footer{
+    text-align:center;
+    padding:1rem;
+    font-size:.9rem;
+    background:#fafafa;
+}
+
+/* ========== TABLET ========== */
+@media(min-width:768px){
+    .auth-container{
+        max-width:450px;
+    }
+
+    .auth-body{
+        padding:2rem;
+    }
+
+    .auth-header{
+        padding:2rem;
+    }
+}
+
+/* ========== DESKTOP ========== */
+@media(min-width:992px){
+    .auth-container{
+        max-width:500px;
+    }
+}
+
+/* reduce motion */
+@media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important;}
+}
+</style>
 </head>
+
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container-fluid px-2 px-md-4">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <i class="fas fa-cogs"></i>www.getautoparts.shop
-            </a>
-        </div>
-    </nav>
 
-    <!-- Main Content -->
-    <main>
-        <div class="auth-container">
-            {% block content %}
-            <div class="auth-card">
-                <!-- Header -->
-                <div class="auth-header">
-                    <i class="fas fa-user-plus"></i>
-                    <h2>{% block auth_title %}Create Account{% endblock %}</h2>
-                    <p>{% block auth_subtitle %}Join our community today{% endblock %}</p>
-                </div>
+<nav class="navbar">
+    <a class="navbar-brand" href="{% url 'home' %}">
+        <i class="fas fa-cogs"></i> getautoparts.shop
+    </a>
+</nav>
 
-                <!-- Body -->
-                <div class="auth-body">
-                    <form method="post" novalidate>
-                        {% csrf_token %}
+<main>
+    <div class="auth-container">
+        <div class="auth-card">
 
-                        {% if form.non_field_errors %}
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="fas fa-exclamation-circle me-2"></i>
-                                <strong>Error:</strong>
-                                {% for error in form.non_field_errors %}
-                                    <div>{{ error }}</div>
-                                {% endfor %}
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                            </div>
-                        {% endif %}
-
-                        {% for field in form %}
-                            <div class="form-group">
-                                {% if field.field.widget.input_type != 'hidden' %}
-                                    <label for="{{ field.id_for_label }}" class="form-label">
-                                        {{ field.label }}
-                                        {% if field.field.required %}
-                                            <span style="color: var(--danger);">*</span>
-                                        {% endif %}
-                                    </label>
-                                    
-                                    {% if field.field.widget.input_type == 'checkbox' %}
-                                        <div class="form-check">
-                                            {{ field }}
-                                            <label class="form-check-label" for="{{ field.id_for_label }}">
-                                               For Store owners Only
-                                            </label>
-                                        </div>
-                                    {% elif field.field.widget.input_type == 'select' %}
-                                        {{ field }}
-                                    {% else %}
-                                        {{ field }}
-                                    {% endif %}
-
-                                    {% if field.errors %}
-                                        <div class="invalid-feedback" style="display: block;">
-                                            <i class="fas fa-times-circle me-1"></i>
-                                            {% for error in field.errors %}
-                                                <div>{{ error }}</div>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-
-                                    {% if field.help_text %}
-                                        <small class="form-text text-muted d-block mt-2">
-                                            {{ field.help_text|safe }}
-                                        </small>
-                                    {% endif %}
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-
-                        <button type="submit" class="btn btn-auth btn-primary-auth mt-2">
-                            <i class="fas fa-check-circle me-2"></i>{% block submit_text %}Create Account{% endblock %}
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Footer -->
-                <div class="auth-footer">
-                    <p>
-                        {% block footer_text %}
-                            Already have an account? <a href="{% url 'login' %}">Login here</a>
-                        {% endblock %}
-                    </p>
-                </div>
+            <div class="auth-header">
+                <i class="fas fa-user-plus"></i>
+                <h2>Create Account</h2>
+                <p>Join our auto parts marketplace</p>
             </div>
-            {% endblock %}
+
+            <div class="auth-body">
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="form-group">
+
+                            <label class="form-label">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.errors %}
+                                <div style="color:red;font-size:.8rem;margin-top:.3rem;">
+                                    {{ field.errors }}
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    {% endfor %}
+
+                    <button class="btn-auth">
+                        Create Account
+                    </button>
+                </form>
+
+            </div>
+
+            <div class="auth-footer">
+                Already have an account?
+                <a href="{% url 'login' %}">Login</a>
+            </div>
+
         </div>
-    </main>
+    </div>
+</main>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Add Bootstrap validation classes to form fields
-            const forms = document.querySelectorAll('form');
-            forms.forEach(form => {
-                const inputs = form.querySelectorAll('.form-control, .form-select');
-                inputs.forEach(input => {
-                    if (input.parentElement.querySelector('.invalid-feedback')) {
-                        input.classList.add('is-invalid');
-                    }
-                });
-            });
-
-            // Auto-dismiss alerts after 5 seconds
-            const alerts = document.querySelectorAll('.alert');
-            alerts.forEach(alert => {
-                setTimeout(() => {
-                    const bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
-                }, 5000);
-            });
-
-            // Smooth scroll and focus management
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                        target.focus();
-                    }
-                });
-            });
-        });
-    </script>
-
-    {% block extra_js %}{% endblock %}
 </body>
 </html>

@@ -13,7 +13,7 @@ from django.utils import timezone
 class Customer(AbstractUser):  
     completename = models.CharField(max_length=250)  
     phone_number = models.CharField(max_length=50)  
-    address = models.TextField()
+    address = models.TextField(blank=False, null=False)
     is_store = models.BooleanField(default=False)
     
     groups = models.ManyToManyField(
